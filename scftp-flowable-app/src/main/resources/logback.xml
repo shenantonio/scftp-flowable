@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration>
+
+<configuration debug="false">
+	<contextName>bas</contextName>
+
+	<!-- 使用maven profile替换logHome -->
+	<property name="logHome" value="./log/" scope="context" />
+
+	<!-- JMX监控 -->
+	<jmxConfigurator />
+
+	<!-- 控制台日志 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern><![CDATA[
+				%-4r %d{yyyy-MM-dd HH:mm:ss.SSS} %thread %-5level %logger - %m%n
+            ]]></pattern>
+		</layout>
+	</appender>
+
+	<!-- 错误及警告日志 -->
+	<appender name="ERROR_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logHome}/%d{yyyy-MM-dd}/error_warn_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>
+				%-4r %d{yyyy-MM-dd HH:mm:ss.SSS} %thread  %-5level %logger  - %m%n
+			</Pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 错误及警告日志 -->
+	<appender name="DRUID" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>WARN</level>
+		</filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logHome}/%d{yyyy-MM-dd}/druid_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>5MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>
+				%-4r %d{yyyy-MM-dd HH:mm:ss.SSS} %thread  %-5level %logger  - %m%n
+			</Pattern>
+		</encoder>
+	</appender>
+	
+
+	<!--================== 第三方logger级别配置 begin ================== -->
+	<!--====== sql log begin ====== -->
+	<logger name="java.sql">
+		<level value="INFO" />
+	</logger>
+
+	<logger name="org.mybatis">
+		<level value="INFO" />
+	</logger>
+
+	<logger name="sqlLog">
+		<level value="INFO" />
+	</logger>
+	<!--======= sql log end ======= -->
+
+	<logger name="org.apache">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.castor">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.springframework">
+		<level value="INFO" />
+	</logger>
+	<!--================== 第三方logger配置 end ================== -->
+<!-- 
+	<logger name="druid.sql">
+		<level value="debug" />
+		<appender-ref ref="DRUID" />
+	</logger>
+	<logger name="druid.sql.DataSource">
+		<level value="debug" />
+		<appender-ref ref="DRUID" />
+	</logger>
+	<logger name="druid.sql.Connection">
+		<level value="debug" />
+		<appender-ref ref="DRUID" />
+	</logger>
+	<logger name="druid.sql.Statement">
+		<level value="debug" />
+		<appender-ref ref="DRUID" />
+	</logger>
+	<logger name="druid.sql.ResultSet">
+		<level value="debug" />
+		<appender-ref ref="DRUID" />
+	</logger> -->
+
+
+	<!-- 根配置 -->
+	<root level="info">
+		<appender-ref ref="CONSOLE" /><!-- 注意: 请在上生产或性能测试前将CONSOLEappender-ref注释掉 -->
+		<appender-ref ref="ERROR_WARN" /><!-- 注意: 请在上生产或性能测试前将CONSOLEappender-ref注释掉 -->
+	</root>
+</configuration>
