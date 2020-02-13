@@ -12,14 +12,17 @@
 	<artifactId>scftp-flowable-app</artifactId>
 	<name>scftp-flowable-app</name>
 	<url>http://maven.apache.org</url>
+	<packaging>war</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>cn.xls.icf.flowable.app.FlowApplication</start-class>
+		<failOnMissingWebXml>false</failOnMissingWebXml>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>cn.xls.icf</groupId>
@@ -52,16 +55,21 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				<version>${springboot.version}</version>
 				<configuration>
-					<mainClass>${start-class}</mainClass>
-					<layout>ZIP</layout>
+					<excludeArtifactIds>
+						spring-boot-configuration-processor
+					</excludeArtifactIds>
 				</configuration>
 				<executions>
 					<execution>
 						<goals>
+							<goal>build-info</goal>
 							<goal>repackage</goal>
 						</goals>
+						<configuration>
+							<mainClass>${start-class}</mainClass>
+							<executable>false</executable>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
